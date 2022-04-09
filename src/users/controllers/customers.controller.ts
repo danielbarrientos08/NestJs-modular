@@ -9,14 +9,17 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { CustomersService } from '../services/customers.service';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customer.dto';
 
+@ApiTags('Customer')
 @Controller('customers')
 export class CustomerController {
   constructor(private customersService: CustomersService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Lista de Clientes' })
   findAll() {
     return this.customersService.findAll();
   }
