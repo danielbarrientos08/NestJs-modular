@@ -18,31 +18,31 @@ import { CreateCategoryDto, UpdateCategoryDto } from './../dtos/category.dtos';
 export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
-  @Get()
-  findAll() {
-    return this.categoriesService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.categoriesService.findAll();
+  // }
 
-  @Get(':id')
-  get(@Param('id', ParseIntPipe) id: number) {
-    return this.categoriesService.findOne(id);
-  }
+  // @Get(':id')
+  // get(@Param('id', ParseIntPipe) id: number) {
+  //   return this.categoriesService.findOne(id);
+  // }
 
-  @Post()
-  create(@Body() payload: CreateCategoryDto) {
-    return this.categoriesService.create(payload);
-  }
+  // @Post()
+  // create(@Body() payload: CreateCategoryDto) {
+  //   return this.categoriesService.create(payload);
+  // }
 
-  @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() payload: UpdateCategoryDto,
-  ) {
-    return this.categoriesService.update(id, payload);
-  }
+  // @Put(':id')
+  // update(
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Body() payload: UpdateCategoryDto,
+  // ) {
+  //   return this.categoriesService.update(id, payload);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.categoriesService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id', ParseIntPipe) id: number) {
+  //   return this.categoriesService.remove(+id);
+  // }
 }
