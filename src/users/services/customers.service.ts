@@ -5,12 +5,9 @@ import { CreateCustomerDto, UpdateCustomerDto } from '../dtos/customer.dto';
 
 @Injectable()
 export class CustomersService {
-
-
   // findAll() {
   //   return this.customers;
   // }
-
   // findOne(id: number) {
   //   const customer = this.customers.find((item) => item.id === id);
   //   if (!customer) {
@@ -18,7 +15,6 @@ export class CustomersService {
   //   }
   //   return customer;
   // }
-
   // create(data: CreateCustomerDto) {
   //   this.counterId = this.counterId + 1;
   //   const newCustomer = {
@@ -28,7 +24,6 @@ export class CustomersService {
   //   this.customers.push(newCustomer);
   //   return newCustomer;
   // }
-
   // update(id: number, changes: UpdateCustomerDto) {
   //   const customer = this.findOne(id);
   //   const index = this.customers.findIndex((item) => item.id === id);
@@ -38,7 +33,6 @@ export class CustomersService {
   //   };
   //   return this.customers[index];
   // }
-
   // remove(id: number) {
   //   const index = this.customers.findIndex((item) => item.id === id);
   //   if (index === -1) {

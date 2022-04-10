@@ -13,11 +13,9 @@ export class BrandsService {
   //     image: 'https://i.imgur.com/U4iGx1j.jpeg',
   //   },
   // ];
-
   // findAll() {
   //   return this.brands;
   // }
-
   // findOne(id: number) {
   //   const product = this.brands.find((item) => item.id === id);
   //   if (!product) {
@@ -25,7 +23,6 @@ export class BrandsService {
   //   }
   //   return product;
   // }
-
   // create(data: CreateBrandDto) {
   //   this.counterId = this.counterId + 1;
   //   const newBrand = {
@@ -35,7 +32,6 @@ export class BrandsService {
   //   this.brands.push(newBrand);
   //   return newBrand;
   // }
-
   // update(id: number, changes: UpdateBrandDto) {
   //   const brand = this.findOne(id);
   //   const index = this.brands.findIndex((item) => item.id === id);
@@ -45,7 +41,6 @@ export class BrandsService {
   //   };
   //   return this.brands[index];
   // }
-
   // remove(id: number) {
   //   const index = this.brands.findIndex((item) => item.id === id);
   //   if (index === -1) {

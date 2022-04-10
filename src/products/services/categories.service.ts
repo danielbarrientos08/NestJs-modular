@@ -12,11 +12,9 @@ export class CategoriesService {
   //     name: 'Category 1',
   //   },
   // ];
-
   // findAll() {
   //   return this.categories;
   // }
-
   // findOne(id: number) {
   //   const category = this.categories.find((item) => item.id === id);
   //   if (!category) {
@@ -24,7 +22,6 @@ export class CategoriesService {
   //   }
   //   return category;
   // }
-
   // create(data: CreateCategoryDto) {
   //   this.counterId = this.counterId + 1;
   //   const newCategory = {
@@ -34,7 +31,6 @@ export class CategoriesService {
   //   this.categories.push(newCategory);
   //   return newCategory;
   // }
-
   // update(id: number, changes: UpdateCategoryDto) {
   //   const category = this.findOne(id);
   //   const index = this.categories.findIndex((item) => item.id === id);
@@ -44,7 +40,6 @@ export class CategoriesService {
   //   };
   //   return this.categories[index];
   // }
-
   // remove(id: number) {
   //   const index = this.categories.findIndex((item) => item.id === id);
   //   if (index === -1) {
