@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Document, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Customer } from '../entities/customer.entity';
@@ -20,6 +20,7 @@ export class CustomersService {
   }
 
   create(data: CreateCustomerDto) {
+    console.log(data);
     const newModel = new this.customerModel(data);
     return newModel.save();
   }
