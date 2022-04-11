@@ -1,6 +1,5 @@
 import { HttpModule, HttpService } from '@nestjs/axios';
 import * as Joi from 'joi';
-import { MongoClient } from 'mongodb';
 
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';

@@ -4,8 +4,10 @@ import { Document } from 'mongoose';
 export class Customer extends Document {
   @Prop({ required: true })
   name: string;
+
   @Prop({ required: true })
   lastName: string;
+
   @Prop({ required: true })
   phone: string;
 }
