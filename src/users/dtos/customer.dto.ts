@@ -1,4 +1,9 @@
-import { IsString, IsNotEmpty, IsPhoneNumber, IsArray, ValidateNested } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsPhoneNumber,
+  ValidateNested,
+} from 'class-validator';
 // import { PartialType } from '@nestjs/mapped-types';
 import { PartialType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
