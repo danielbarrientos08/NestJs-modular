@@ -9,11 +9,15 @@ export class BrandsService {
   constructor(@InjectRepository(Brand) private brandRepo: Repository<Brand>) {}
 
   findAll() {
-    return this.brandRepo.find();
+    return this.brandRepo.find({
+      relations: ['products'],
+    });
   }
 
   async findOne(id: number) {
-    const brand = await this.brandRepo.findOne();
+    const brand = await this.brandRepo.findOne(id, {
+      relations: ['products'],
+    });
     if (!brand) {
       throw new NotFoundException(`brand #${id} not found`);
     }

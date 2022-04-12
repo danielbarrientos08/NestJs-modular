@@ -46,9 +46,11 @@ export class CreateProductDto {
   // @ApiProperty()
   // readonly category: CreateCategoryDto;
 
-  // @IsNotEmpty()
-  // @IsMongoId()
-  // readonly brand: string;
+  @IsNotEmpty()
+  @IsPositive()
+  @IsInt()
+  @ApiProperty()
+  readonly brandId: number;
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
