@@ -25,20 +25,15 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get('tasks')
-  tasks() {
-    return this.usersService.getTasks();
-  }
-
   @Get(':id')
-  get(@Param('id') id: string) {
+  get(@Param('id') id: number) {
     return this.usersService.findOne(id);
   }
 
-  @Get(':id/orders')
-  getOrders(@Param('id') id: string) {
-    return this.usersService.getOrdersByUser(id);
-  }
+  // @Get(':id/orders')
+  // getOrders(@Param('id') id: number) {
+  //   return this.usersService.getOrdersByUser(id);
+  // }
 
   @Post()
   create(@Body() payload: CreateUserDto) {
@@ -46,12 +41,12 @@ export class UsersController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() payload: UpdateUserDto) {
+  update(@Param('id') id: number, @Body() payload: UpdateUserDto) {
     return this.usersService.update(id, payload);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.usersService.remove(id);
   }
 }

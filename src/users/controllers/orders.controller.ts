@@ -27,7 +27,7 @@ export class OrdersController {
   }
 
   @Get(':id')
-  get(@Param('id') id: string) {
+  get(@Param('id') id: number) {
     return this.ordersService.findOne(id);
   }
 
@@ -37,24 +37,24 @@ export class OrdersController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() payload: UpdateOrderDto) {
+  update(@Param('id') id: number, @Body() payload: UpdateOrderDto) {
     return this.ordersService.update(id, payload);
   }
 
-  @Put(':id/products')
-  addProducts(@Param('id') id: string, @Body() payload: AddProductsToOrderDto) {
-    return this.ordersService.addProducts(id, payload.productsIds);
-  }
+  // @Put(':id/products')
+  // addProducts(@Param('id') id: number, @Body() payload: AddProductsToOrderDto) {
+  //   return this.ordersService.addProducts(id, payload.productsIds);
+  // }
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.ordersService.remove(id);
   }
 
-  @Delete(':id/product/:productId')
-  removeProduct(
-    @Param('id') id: string,
-    @Param('productId') productId: string,
-  ) {
-    return this.ordersService.removeProduct(id, productId);
-  }
+  // @Delete(':id/product/:productId')
+  // removeProduct(
+  //   @Param('id') id: number,
+  //   @Param('productId') productId: number,
+  // ) {
+  //   return this.ordersService.removeProduct(id, productId);
+  // }
 }

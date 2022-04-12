@@ -1,44 +1,41 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Category } from '../entities/category.entity';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
+
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos/category.dtos';
 
 @Injectable()
 export class CategoriesService {
   constructor(
-    @InjectModel(Category.name) private categoryModel: Model<Category>,
+    @InjectRepository(Category) private categoryRepo: Repository<Category>,
   ) {}
 
   findAll() {
-    return this.categoryModel.find().exec();
+    return this.categoryRepo.find();
   }
 
-  async findOne(id: string) {
-    const product = await this.categoryModel.findOne({ _id: id }).exec();
-    if (!product) {
-      throw new NotFoundException(`Brand #${id} not found`);
+  async findOne(id: number) {
+    const category = await this.categoryRepo.findOne();
+    if (!category) {
+      throw new NotFoundException(`category #${id} not found`);
     }
-    return product;
+    return category;
   }
 
   create(data: CreateCategoryDto) {
-    const newBrand = new this.categoryModel(data);
-    return newBrand.save();
+    const newCategory = this.categoryRepo.create(data);
+    return this.categoryRepo.save(newCategory);
   }
 
-  async update(id: string, changes: UpdateCategoryDto) {
-    const product = await this.categoryModel
-      .findByIdAndUpdate(id, { $set: changes }, { new: true })
-      .exec();
-    if (!product) {
-      throw new NotFoundException(`Brand #${id} not found`);
-    }
-    return product;
+  async update(id: number, changes: UpdateCategoryDto) {
+    const category = await this.findOne(id);
+    this.categoryRepo.merge(category, changes);
+    return this.categoryRepo.save(category);
   }
 
-  remove(id: string) {
-    return this.categoryModel.findByIdAndDelete(id);
+  async remove(id: number) {
+    const category = await this.findOne(id);
+    return this.categoryRepo.delete(category);
   }
 }

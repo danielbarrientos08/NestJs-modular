@@ -1,53 +1,39 @@
-import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { Order } from '../entities/order.entity';
 import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto';
 
 @Injectable()
 export class OrdersService {
-  constructor(@InjectModel(Order.name) private orderModel: Model<Order>) {}
+  constructor(@InjectRepository(Order) private orderRepo: Repository<Order>) {}
 
-  findAll() {
-    return this.orderModel
-      .find()
-      .populate('customer')
-      .populate('products')
-      .exec();
+  async findAll() {
+    return await this.orderRepo.find();
   }
 
-  async findOne(id: string) {
-    return this.orderModel.findById(id);
+  async findOne(id: number) {
+    const order = await this.orderRepo.findOne();
+    if (!order) {
+      throw new NotFoundException(`order #${id} not found`);
+    }
+    return order;
   }
 
   create(data: CreateOrderDto) {
-    const newModel = new this.orderModel(data);
-    return newModel.save();
+    const newOrder = this.orderRepo.create(data);
+    return this.orderRepo.save(newOrder);
   }
 
-  update(id: string, changes: UpdateOrderDto) {
-    return this.orderModel
-      .findByIdAndUpdate(id, { $set: changes }, { new: true })
-      .exec();
+  async update(id: number, changes: UpdateOrderDto) {
+    const order = await this.findOne(id);
+    this.orderRepo.merge(order, changes);
+    return this.orderRepo.save(order);
   }
 
-  remove(id: string) {
-    return this.orderModel.findByIdAndDelete(id);
-  }
-
-  async removeProduct(id: string, productId: string) {
-    const order = await this.orderModel.findById(id);
-    order.products.pull(productId);
-    return order.save();
-  }
-
-  async addProducts(id: string, productsIds: string[]) {
-    const order = await this.orderModel.findById(id);
-    productsIds.forEach((pId) => {
-      order.products.push(pId);
-    });
-
-    return order.save();
+  async remove(id: number) {
+    const order = await this.findOne(id);
+    return this.orderRepo.delete(order);
   }
 }

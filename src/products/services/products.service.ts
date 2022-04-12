@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, FilterQuery } from 'mongoose';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import {
   CreateProductDto,
@@ -12,32 +12,15 @@ import { Product } from '../entities/product.entity';
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Product.name) private productModel: Model<Product>,
+    @InjectRepository(Product) private productRepo: Repository<Product>,
   ) {}
 
-  async findAll(params?: FilterProductsDto) {
-    if (params) {
-      const filters: FilterQuery<Product> = {};
-      const { limit, offset, minPrice, maxPrice } = params;
-      if (minPrice && maxPrice) {
-        filters.price = { $gte: minPrice, $lte: maxPrice };
-      }
-      return await this.productModel
-        .find(filters)
-        .skip(offset)
-        .limit(limit)
-        .populate('brand')
-        .exec();
-    }
-    return await this.productModel.find().populate('brand').exec();
+  async findAll() {
+    return await this.productRepo.find();
   }
 
-  async findOne(id: string) {
-    const product = await this.productModel
-      .findById(id)
-      .populate('brand')
-      .exec();
-    console.log('el product :', product);
+  async findOne(id: number) {
+    const product = await this.productRepo.findOne(id);
     if (!product) {
       throw new NotFoundException(`Product #${id} not found`);
     }
@@ -45,27 +28,24 @@ export class ProductsService {
   }
 
   create(data: CreateProductDto) {
-    const newProduct = new this.productModel(data);
-    return newProduct.save();
+    // const newProduct = new Product();
+    // newProduct.image = data.image;
+    // newProduct.name = data.name;
+    // newProduct.description = data.description;
+    // newProduct.price = data.price;
+    // newProduct.stock = data.stock;
+    const newProduct = this.productRepo.create(data);
+    return this.productRepo.save(newProduct);
   }
 
-  update(id: string, changes: UpdateProductDto) {
-    const product = this.productModel
-      .findByIdAndUpdate(id, { $set: changes }, { new: true })
-      .exec();
-    if (!product) {
-      throw new NotFoundException(`Product #${id} not found`);
-    }
-
-    return product;
+  async update(id: number, changes: UpdateProductDto) {
+    const product = await this.findOne(id);
+    this.productRepo.merge(product, changes);
+    return this.productRepo.save(product);
   }
 
-  remove(id: string) {
-    const product = this.productModel.findByIdAndDelete(id).exec();
-    if (!product) {
-      throw new NotFoundException(`Product #${id} not found`);
-    }
-
-    return product;
+  async remove(id: number) {
+    const product = await this.findOne(id);
+    return this.productRepo.delete(product);
   }
 }

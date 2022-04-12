@@ -13,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import {
   CreateProductDto,
   UpdateProductDto,
@@ -29,12 +28,12 @@ export class ProductsController {
 
   @Get()
   getProducts(@Query() params: FilterProductsDto) {
-    return this.productsService.findAll(params);
+    return this.productsService.findAll();
   }
 
   @Get(':productId')
-  @HttpCode(HttpStatus.ACCEPTED)
-  getOne(@Param('productId', MongoIdPipe) productId: string) {
+  @HttpCode(HttpStatus.OK)
+  getOne(@Param('productId') productId: number) {
     return this.productsService.findOne(productId);
   }
 
@@ -44,15 +43,12 @@ export class ProductsController {
   }
 
   @Put(':id')
-  update(
-    @Param('id', MongoIdPipe) id: string,
-    @Body() payload: UpdateProductDto,
-  ) {
+  update(@Param('id') id: number, @Body() payload: UpdateProductDto) {
     return this.productsService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id', MongoIdPipe) id: string) {
+  delete(@Param('id') id: number) {
     return this.productsService.remove(id);
   }
 }

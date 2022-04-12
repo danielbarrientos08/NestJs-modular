@@ -1,34 +1,21 @@
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-import { Brand } from './brand.entity';
-@Schema()
-export class Product extends Document {
-  @Prop({ required: true })
+import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+@Entity()
+export class Product {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ type: 'varchar', length: 255, unique: true })
   name: string;
 
-  @Prop({ required: true })
+  @Column({ type: 'text' })
   description: string;
 
-  @Prop({ type: Number, required: true, index: true })
+  @Column({ type: 'int' })
   price: number;
 
-  @Prop({ type: Number })
+  @Column({ type: 'int' })
   stock: number;
-  @Prop()
+
+  @Column({ type: 'varchar' })
   image: string;
-
-  @Prop(
-    raw({
-      name: { type: String },
-      image: { type: String },
-    }),
-  )
-  category: Record<string, any>;
-
-  @Prop({ type: Types.ObjectId, ref: Brand.name })
-  brand: Brand | Types.ObjectId;
 }
-
-export const ProductSchema = SchemaFactory.createForClass(Product);
-//indice compuesto
-ProductSchema.index({ price: 1, stock: -1 });

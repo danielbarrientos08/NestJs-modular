@@ -1,21 +1,15 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+@Entity()
+export class Customer {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-@Schema()
-export class Customer extends Document {
-  @Prop({ required: true })
+  @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Prop({ required: true })
+  @Column({ type: 'varchar', length: 255 })
   lastName: string;
 
-  @Prop({ required: true })
+  @Column()
   phone: string;
-
-  @Prop({
-    type: [{ name: { type: String }, color: { type: String } }],
-  })
-  skills: Types.Array<Record<string, any>>;
 }
-
-export const CustomerSchema = SchemaFactory.createForClass(Customer);

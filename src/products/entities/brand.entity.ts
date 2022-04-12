@@ -1,12 +1,12 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-@Schema()
-export class Brand extends Document {
-  @Prop({ required: true, unique: true })
+import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+@Entity()
+export class Brand {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ type: 'varchar', unique: true })
   name: string;
 
-  @Prop({ required: true })
+  @Column({ type: 'varchar', length: 100 })
   image: string;
 }
-
-export const BrandSchema = SchemaFactory.createForClass(Brand);

@@ -1,50 +1,39 @@
-import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 // import { ProductsService } from '../../products/services/products.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
 
-  findAll() {
-    return this.userModel.find().exec();
+  async findAll() {
+    return await this.userRepo.find();
   }
 
-  getTasks() {
-    // const tasksCollection = this.databaseMongo.collection('tasks');
-    // return tasksCollection.find().toArray();
-  }
-
-  async findOne(id: string) {
-    return this.userModel.findById(id);
-  }
-
-  async getOrdersByUser(userId: string) {
-    const user = await this.findOne(userId);
-    return {
-      date: new Date(),
-      user,
-      // products: this.productsService.findAll(),
-      products: [],
-    };
+  async findOne(id: number) {
+    const user = await this.userRepo.findOne();
+    if (!user) {
+      throw new NotFoundException(`user #${id} not found`);
+    }
+    return user;
   }
 
   create(data: CreateUserDto) {
-    const newModel = new this.userModel(data);
-    return newModel.save();
+    const newUser = this.userRepo.create(data);
+    return this.userRepo.save(newUser);
   }
 
-  update(id: string, changes: UpdateUserDto) {
-    return this.userModel
-      .findByIdAndUpdate(id, { $set: changes }, { new: true })
-      .exec();
+  async update(id: number, changes: UpdateUserDto) {
+    const user = await this.findOne(id);
+    this.userRepo.merge(user, changes);
+    return this.userRepo.save(user);
   }
 
-  remove(id: string) {
-    return this.userModel.findByIdAndDelete(id);
+  async remove(id: number) {
+    const user = await this.findOne(id);
+    return this.userRepo.delete(user);
   }
 }
