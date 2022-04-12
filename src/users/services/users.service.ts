@@ -1,13 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
-// import { ProductsService } from '../../products/services/products.service';
+import { ProductsService } from '../../products/services/products.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+  constructor(
+    private productsService: ProductsService,
+    private configService: ConfigService,
+    @InjectRepository(User) private userRepo: Repository<User>,
+  ) {}
 
   async findAll() {
     return await this.userRepo.find();
