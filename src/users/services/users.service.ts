@@ -5,17 +5,21 @@ import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { ProductsService } from '../../products/services/products.service';
+import { CustomersService } from './customers.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private productsService: ProductsService,
+    private customerService: CustomersService,
     private configService: ConfigService,
     @InjectRepository(User) private userRepo: Repository<User>,
   ) {}
 
   async findAll() {
-    return await this.userRepo.find();
+    return await this.userRepo.find({
+      relations: ['customer'],
+    });
   }
 
   async findOne(id: number) {
@@ -26,8 +30,12 @@ export class UsersService {
     return user;
   }
 
-  create(data: CreateUserDto) {
+  async create(data: CreateUserDto) {
     const newUser = this.userRepo.create(data);
+    if (data.customerId) {
+      const customer = await this.customerService.findOne(data.customerId);
+      newUser.customer = customer;
+    }
     return this.userRepo.save(newUser);
   }
 
