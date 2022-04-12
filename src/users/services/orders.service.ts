@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Order } from '../entities/order.entity';
-import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto';
+import { CreateOrderDto } from '../dtos/order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -21,16 +21,16 @@ export class OrdersService {
     return order;
   }
 
-  create(data: CreateOrderDto) {
-    const newOrder = this.orderRepo.create(data);
-    return this.orderRepo.save(newOrder);
-  }
+  // async create(data: CreateOrderDto) {
+  //   const newOrder = this.orderRepo.create();
+  //   return this.orderRepo.save(newOrder);
+  // }
 
-  async update(id: number, changes: UpdateOrderDto) {
-    const order = await this.findOne(id);
-    this.orderRepo.merge(order, changes);
-    return this.orderRepo.save(order);
-  }
+  // async update(id: number, changes: UpdateOrderDto) {
+  //   const order = await this.findOne(id);
+  //   this.orderRepo.merge(order, changes);
+  //   return this.orderRepo.save(order);
+  // }
 
   async remove(id: number) {
     const order = await this.findOne(id);

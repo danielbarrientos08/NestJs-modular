@@ -50,4 +50,6 @@ export class Product {
   @ManyToMany(() => Category, (category) => category.products)
   @JoinTable()
   categories: Category[];
+
+  
 }
