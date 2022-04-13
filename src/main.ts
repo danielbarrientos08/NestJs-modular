@@ -10,7 +10,7 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transformOptions: {
-        enableImplicitConversion: true,
+        enableImplicitConversion: true, //habilitar la conversion de datos en params de forma implicita
       },
     }),
   );

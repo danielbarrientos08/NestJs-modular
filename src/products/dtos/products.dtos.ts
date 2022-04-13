@@ -55,6 +55,7 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {}
 export class FilterProductsDto {
   @IsOptional()
   @IsInt()
+  @Min(0)
   limit: number;
 
   @IsOptional()

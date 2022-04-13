@@ -10,6 +10,7 @@ import {
 import { Product } from '../entities/product.entity';
 import { Category } from '../entities/category.entity';
 import { Brand } from '../entities/brand.entity';
+import { off } from 'process';
 @Injectable()
 export class ProductsService {
   constructor(
@@ -18,7 +19,15 @@ export class ProductsService {
     @InjectRepository(Brand) private brandRepo: Repository<Brand>,
   ) {}
 
-  async findAll() {
+  async findAll(params?: FilterProductsDto) {
+    if (params) {
+      const { limit, offset } = params;
+      return await this.productRepo.find({
+        relations: ['brand'],
+        take: limit,
+        skip: offset,
+      });
+    }
     return await this.productRepo.find({
       relations: ['brand'],
     });
