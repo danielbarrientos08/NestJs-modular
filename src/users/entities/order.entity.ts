@@ -26,7 +26,6 @@ export class Order {
   })
   updated_at: Date;
 
- 
   @ManyToOne(() => Customer, (customer) => customer.orders)
   customer: Customer;
 
