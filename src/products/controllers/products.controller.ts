@@ -13,7 +13,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
 import {
   CreateProductDto,
   UpdateProductDto,
@@ -21,18 +21,23 @@ import {
 } from '../dtos/products.dtos';
 
 import { ProductsService } from './../services/products.service';
+import { JwtAuthGuard } from './../../auth/guards/jwt-auth.guard';
+import { Public } from './../../auth/decorators/public.decorator';
 
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAuthGuard)
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
+  @Public()
   @Get()
   getProducts(@Query() params?: FilterProductsDto) {
     return this.productsService.findAll(params);
   }
 
+  @Public()
   @Get(':productId')
   @HttpCode(HttpStatus.OK)
   getOne(@Param('productId') productId: number) {
